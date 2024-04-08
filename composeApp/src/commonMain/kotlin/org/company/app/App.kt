@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import multiplatform_app.composeapp.generated.resources.*
 import org.company.app.theme.AppTheme
 import org.company.app.theme.LocalThemeIsDark
+import org.company.app.util.Platform
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -109,7 +110,7 @@ internal fun App() = AppTheme {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(Res.string.cyclone),
+                text = (getPlatform().name.toString()),
                 style = MaterialTheme.typography.bodyLarge
                     .copy(color = MaterialTheme.colorScheme.error),
             )
@@ -118,3 +119,4 @@ internal fun App() = AppTheme {
 }
 
 internal expect fun openUrl(url: String?)
+expect fun getPlatform(): Platform

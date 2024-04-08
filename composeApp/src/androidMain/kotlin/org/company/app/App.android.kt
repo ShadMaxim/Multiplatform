@@ -7,6 +7,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import org.company.app.platformUtil.AndroidPlatform
+import org.company.app.util.Platform
 
 class AndroidApp : Application() {
     companion object {
@@ -36,3 +38,5 @@ internal actual fun openUrl(url: String?) {
     }
     AndroidApp.INSTANCE.startActivity(intent)
 }
+
+actual fun getPlatform(): Platform = AndroidPlatform()
