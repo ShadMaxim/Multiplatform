@@ -2,6 +2,9 @@ package org.company.app
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -39,7 +42,7 @@ internal fun App() = AppTheme {
             initialValue = 0f,
             targetValue = 360f,
             animationSpec = infiniteRepeatable(
-                animation = tween(1000, easing = LinearEasing)
+                animation = tween(2000, easing = LinearEasing)
             )
         )
 
@@ -85,9 +88,31 @@ internal fun App() = AppTheme {
 
         TextButton(
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp).widthIn(min = 200.dp),
-            onClick = { openUrl("https://github.com/terrakok") },
+            onClick = { openUrl("https://kmm.icerock.dev/learning/intro") },
         ) {
             Text(stringResource(Res.string.open_github))
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .requiredHeight(44.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    shape = MaterialTheme.shapes.small
+                )
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { /*onCancelButtonClicked.invoke("987")*/}
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(Res.string.cyclone),
+                style = MaterialTheme.typography.bodyLarge
+                    .copy(color = MaterialTheme.colorScheme.error),
+            )
         }
     }
 }
