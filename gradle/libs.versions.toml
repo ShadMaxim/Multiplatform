@@ -12,6 +12,8 @@ buildConfig = "4.1.1"
 kotlinx-coroutines = "1.8.0"
 kotlinx-serialization = "1.6.3"
 multiplatformSettings = "1.1.1"
+extensionsComposeJetbrains = "2.1.4-compose-experimental"
+decompose = "2.2.0-alpha03"
 koin = "3.5.3"
 
 [libraries]
@@ -29,6 +31,8 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+decompose-jetbrains = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "extensionsComposeJetbrains"}
+decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 
 [plugins]
 

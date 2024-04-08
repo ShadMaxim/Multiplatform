@@ -110,7 +110,7 @@ internal fun App() = AppTheme {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = (getPlatform().name.toString()),
+                text = (getPlatform().name),
                 style = MaterialTheme.typography.bodyLarge
                     .copy(color = MaterialTheme.colorScheme.error),
             )
