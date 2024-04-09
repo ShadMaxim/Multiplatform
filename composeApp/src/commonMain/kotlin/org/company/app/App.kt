@@ -14,16 +14,37 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import multiplatform_app.composeapp.generated.resources.*
+import navigation.RootComponent
 import org.company.app.theme.AppTheme
 import org.company.app.theme.LocalThemeIsDark
 import org.company.app.util.Platform
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import screens.ScreenA
+import screens.ScreenB
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
-internal fun App() = AppTheme {
+internal fun App(root: RootComponent) = AppTheme {
+
+    val childStack by root.childStack.subscribeAsState()
+    Children(
+        stack = childStack,
+        animation = stackAnimation(slide())
+    ) { child ->
+        when(val instance = child.instance) {
+            is RootComponent.Child.ScreenA -> ScreenA(instance.component)
+            is RootComponent.Child.ScreenB -> ScreenB(instance.component.text, instance.component)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

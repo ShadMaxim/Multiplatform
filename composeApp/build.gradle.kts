@@ -63,6 +63,9 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.multiplatformSettings)
             implementation(libs.koin.core)
+            implementation(libs.decompose)
+            implementation(libs.decompose.jetbrains)
+            implementation(libs.kotlinx.serialization.json)
         }
 
         commonTest.dependencies {
@@ -70,9 +73,6 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
             implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.decompose)
-            implementation(libs.decompose.jetbrains)
-            implementation(libs.kotlinx.serialization.json)
         }
 
         androidMain.dependencies {
@@ -85,6 +85,13 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.decompose)
+            implementation(libs.decompose.jetbrains)
+            implementation(libs.essenty.lifecycle)
+            implementation(libs.essenty.stateKeeper)
+            implementation(libs.essenty.instanceKeeper)
+            implementation(project(":sample:shared:shared"))
+            implementation(project(":sample:shared:compose"))
         }
 
         iosMain.dependencies {

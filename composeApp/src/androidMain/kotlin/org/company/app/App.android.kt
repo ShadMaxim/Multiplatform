@@ -7,6 +7,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.arkivanov.decompose.retainedComponent
+import navigation.RootComponent
 import org.company.app.platformUtil.AndroidPlatform
 import org.company.app.util.Platform
 
@@ -25,7 +27,10 @@ class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent { App() }
+        val root = retainedComponent {
+            RootComponent(it)
+        }
+        setContent { App(root) }
     }
 }
 
