@@ -4,14 +4,21 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import java.awt.Dimension
 import org.company.app.App
+import org.company.app.di.AppModule
+import org.koin.core.context.startKoin
 
-fun main() = application {
-    Window(
-        title = "Multiplatform App",
-        state = rememberWindowState(width = 800.dp, height = 600.dp),
-        onCloseRequest = ::exitApplication,
-    ) {
-        window.minimumSize = Dimension(350, 600)
-        App()
+fun main() {
+    startKoin {
+        modules(AppModule.appModule)
+    }
+    application {
+        Window(
+            title = "Multiplatform App",
+            state = rememberWindowState(width = 800.dp, height = 600.dp),
+            onCloseRequest = ::exitApplication,
+        ) {
+            window.minimumSize = Dimension(350, 600)
+            App()
+        }
     }
 }

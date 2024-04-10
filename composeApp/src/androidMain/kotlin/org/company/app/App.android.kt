@@ -7,8 +7,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import org.company.app.di.AppModule
 import org.company.app.platformUtil.AndroidPlatform
 import org.company.app.util.Platform
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
 class AndroidApp : Application() {
     companion object {
@@ -18,6 +21,14 @@ class AndroidApp : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
+        initKoin()
+    }
+
+    private fun initKoin() {
+        stopKoin()
+        startKoin {
+            modules(AppModule.appModule)
+        }
     }
 }
 
