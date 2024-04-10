@@ -1,30 +1,25 @@
 package org.company.app
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import moe.tlaster.precompose.PreComposeApp
-import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
-import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
-import moe.tlaster.precompose.stateholder.LocalSavedStateHolder
-import multiplatform_app.composeapp.generated.resources.*
 import org.company.app.theme.AppTheme
-import org.company.app.theme.LocalThemeIsDark
 import org.company.app.util.Platform
-import org.company.app.viewModel.HomeViewModel
-import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.resources.vectorResource
-import org.koin.core.parameter.parametersOf
 import androidx.compose.runtime.Composable
+import moe.tlaster.precompose.navigation.NavOptions
+import moe.tlaster.precompose.navigation.PopUpTo
+import moe.tlaster.precompose.navigation.transition.NavTransition
+import org.company.app.data.Scenes.*
+import org.company.app.data.Scenes.Companion.ARGUMENT
+import org.company.app.scenes.GreetingScene
+import org.company.app.scenes.HomeScene
+import org.company.app.scenes.NoteListScene
 import org.koin.compose.KoinContext
 
 
@@ -37,25 +32,24 @@ fun App() {
             AppTheme {
                 NavHost(
                     navigator = navigator,
-                    initialRoute = "/home"
+                    initialRoute = Home().routeToDestination
                 ) {
-                    scene(route = "/home") { backStackEntry ->
 
-                        val stateHolder = LocalSavedStateHolder.current
+                    scene(route = Home().routeToDestination) { backStackEntry ->
+                        HomeScene(
+                            goToSecondScene = {
+//                                navigator.navigate(route = "/greeting/${it}")
+//                                navigator.navigate(route = "/greeting/${it}")
+                                navigator.navigate(route = Greeting(argument = it).setRouteAndArgument)
+//                                navigator.navigate(route = NoteList(argument = it).setRouteAndArgument)
+                            }
+                        )
+                        /*val stateHolder = LocalSavedStateHolder.current
                         val viewModel =
-                            koinViewModel(HomeViewModel::class) { parametersOf(1236, stateHolder) }
+                            koinViewModel(HomeViewModel::class) { parametersOf(9999, stateHolder) }
                         val name = viewModel.name.collectAsStateWithLifecycle()
-                        /*val viewModel = viewModel(modelClass = HomeViewModel::class,keys = listOf("")) {
-                            HomeViewModel()
-                        }
-                        val name by viewModel.name.collectAsStateWithLifecycle()*/
                         var label = "1234"
 
-                        backStackEntry.path<String>("name")?.let { nameQ ->
-                            if (nameQ != null) {
-                                label = nameQ
-                            }
-                        }
                         Column(
                             modifier = Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -112,27 +106,63 @@ fun App() {
                                     Text(stringResource(Res.string.theme))
                                 }
                             )
+                        }*/
+                    }
+
+//                    scene(route = "/greeting/{name}") { backStackEntry ->
+                    scene(route = Greeting().routeToDestination) { backStackEntry ->
+                        backStackEntry.path<String>(ARGUMENT)?.let { name: String? ->
+//                        backStackEntry.path<String>(ARGUMENT)?.let { name ->
+                            GreetingScene(
+                                value = name.orEmpty(),
+//                                goToHomeScene = {navigator.goBack()}
+                                goToHomeScene = { navigator.navigate(route = NoteList(argument = name).setRouteAndArgument) }
+                            )
                         }
                     }
-                    /*scene(route = "/greeting/{name}") { backStackEntry ->
-                        backStackEntry.path<String>("name")?.let { name ->
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    text = name,
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(modifier = Modifier.height(30.dp))
-                                Button(onClick = { navigator.goBackWith("1234567") }) {
-                                    Text(text = "GO BACK!")
+
+                    scene(
+                        route = NoteList().routeToDestination,
+                        navTransition = NavTransition(
+                            createTransition = slideInVertically(initialOffsetY = { it }),
+                            destroyTransition = slideOutVertically(targetOffsetY = { it }),
+                            pauseTransition = scaleOut(targetScale = 0.9f),
+                            resumeTransition = scaleIn(initialScale = 0.9f),
+                            exitTargetContentZIndex = 1f,
+                        )
+                    ) { backStackEntry ->
+                        backStackEntry.path<String>(ARGUMENT)?.let { name: String? ->
+                            NoteListScene(
+                                onEditClicked = {},
+                                onAddClicked = {},
+                                onItemClicked = {
+                                    /*navigator.navigate(
+                                        route = Home().setRouteAndArgument,
+                                        options = NavOptions(
+                                            popUpTo = PopUpTo(
+                                                route = Greeting().setRouteAndArgument,
+                                                inclusive = true,
+                                            )
+                                        )
+                                    )*/
+                                    /*navigator.goBack(
+                                        popUpTo = PopUpTo(
+                                            route = Home().setRouteAndArgument,
+                                            inclusive = false
+                                        )
+                                    )*/
+                                    navigator.navigate(
+                                        Greeting().routeToDestination,
+                                        NavOptions(
+                                            // Launch the scene as single top
+                                            launchSingleTop = true,
+                                        ),
+                                    )
                                 }
-                            }
+                            )
                         }
-                    }*/
-                    dialog(route = "/greeting/{name}") { backStackEntry ->
+                    }
+                    /*dialog(route = "/greeting/{name}") { backStackEntry ->
                         backStackEntry.path<String>("name")?.let { name ->
                             Column(
                                 modifier = Modifier
@@ -152,7 +182,7 @@ fun App() {
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
             }
         }

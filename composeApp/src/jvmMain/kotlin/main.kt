@@ -16,6 +16,8 @@ fun main() {
             title = "Multiplatform App",
             state = rememberWindowState(width = 800.dp, height = 600.dp),
             onCloseRequest = ::exitApplication,
+//            resizable = false,
+//            transparent = true
         ) {
             window.minimumSize = Dimension(350, 600)
             App()
