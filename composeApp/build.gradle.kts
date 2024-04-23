@@ -70,13 +70,10 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
             implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.decompose)
-            implementation(libs.decompose.jetbrains)
             implementation(libs.kotlinx.serialization.json)
         }
 
         androidMain.dependencies {
-            implementation(libs.decompose)
             implementation(compose.uiTooling)
             implementation(libs.androidx.activityCompose)
             implementation(libs.kotlinx.coroutines.android)
